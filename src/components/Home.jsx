@@ -1,8 +1,13 @@
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../features/slices/CartSlice";
 
 const Home = () => {
   const { items, status, error } = useSelector((state) => state.products);
-
+  const dispatch = useDispatch();
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+  };
   return (
     <div className="home-container">
       {status == "pending" ? (
@@ -21,7 +26,9 @@ const Home = () => {
                   <span>{product.description}</span>
                   <span className="price">${product.price}</span>
                 </div>
-                <button>Add To Cart</button>
+                <button onClick={() => handleAddToCart(product)}>
+                  Add To Cart
+                </button>
               </div>
             ))}
           </div>
