@@ -18,15 +18,15 @@ const cartSlice = createSlice({
       );
       if (getIndex >= 0) {
         state.cartItems[getIndex].Quantity += 1;
-        toast.info(`${state.cartItems[getIndex].name} increased`, {
-          position: "bottom-left",
-        });
+        // toast.info(`${state.cartItems[getIndex].name} increased`, {
+        //   position: "bottom-left",
+        // });
       } else {
         const tempProduct = { ...action.payload, Quantity: 1 };
         state.cartItems.push(tempProduct);
-        toast.success(`${tempProduct.name} added into cart`, {
-          position: "bottom-left",
-        });
+        // toast.success(`${tempProduct.name} added into cart`, {
+        //   position: "bottom-left",
+        // });
       }
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
