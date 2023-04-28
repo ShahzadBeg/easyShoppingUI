@@ -17,9 +17,8 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(registerUser(user));
+    dispatch(registerUser({ user, navigate }));
     dispatch(fillLoginData(user));
-    navigate("/login");
   };
   return (
     <>

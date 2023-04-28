@@ -2,29 +2,25 @@ import React from "react";
 import { StyledForm } from "./StyledForm";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fillUserData, login } from "../../features/slices/AuthSlice";
+import { login } from "../../features/slices/AuthSlice";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { token } = useSelector((state) => state.auth);
+  const { email, _password } = useSelector((state) => state.auth);
 
   const [user, setUser] = useState({
-    userName: "test@gmail.com",
-    password: "izyan@123",
+    userName: email ?? "",
+    password: _password ?? "",
   });
 
   const handleLogin = (e) => {
     e.preventDefault();
-    dispatch(login(user));
-    navigate("/");
+    dispatch(login({ user, navigate }));
   };
-  useEffect(() => {
-    dispatch(fillUserData());
-  }, [token]);
   return (
     <StyledForm onSubmit={handleLogin}>
       <h2>Login</h2>

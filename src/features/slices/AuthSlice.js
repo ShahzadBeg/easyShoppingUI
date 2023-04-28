@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { baseUrl, roleUri } from "../api";
-import jwtDecode from "jwt-decode";
+import { baseUrl } from "../api";
 import { toast } from "react-toastify";
 
 const initialState = {
@@ -12,7 +11,7 @@ const initialState = {
   email: "",
   _Id: "",
   role: [],
-  _password: "",
+  _password: localStorage.getItem("password"),
   registerStatus: "",
   registerMsg: "",
   loginStatus: "",
@@ -22,13 +21,17 @@ const initialState = {
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
-  async (values, { rejectWithValue }) => {
+  async ({ user, navigate }, { rejectWithValue }) => {
     try {
-      var response = await axios.post(`${baseUrl}/auth/register`, values);
+      var response = await axios.post(`${baseUrl}/auth/register`, { ...user });
       if (response?.data?.success) {
         toast.success(`${response?.data?.message[0]}`, {
           position: "bottom-left",
         });
+        const values = { ...user };
+        const _password = values.password;
+        localStorage.setItem("password", _password);
+        navigate("/login");
       } else {
         toast.info(`${response?.data?.message[0]}`, {
           position: "bottom-left",
@@ -45,9 +48,12 @@ export const registerUser = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "auth/login",
-  async (values, { rejectWithValue }) => {
+  async ({ user, navigate }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${baseUrl}/auth/login`, values);
+      const response = await axios.post(`${baseUrl}/auth/login`, { ...user });
+      localStorage.setItem("user", JSON.stringify(response?.data));
+      localStorage.removeItem("password");
+      navigate("/");
       return response?.data;
     } catch (err) {
       console.log("error", err?.response?.data);
@@ -61,22 +67,35 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     fillUserData(state, action) {
-      console.log("called data");
-      if (state.loginUser) {
-        console.log("inside");
-        localStorage.setItem("user", JSON.stringify(state.loginUser));
-        state.token = state.loginUser.token;
-        state.accessToken = state.loginUser.accessToken;
-        state.name = state.loginUser.name;
-        state.email = state.loginUser.email;
-        state._Id = state.loginUser.userId;
-        state.role = state.loginUser.role;
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        state.token = user.token;
+        state.accessToken = user.accessToken;
+        state.name = user.name;
+        state.email = user.email;
+        state._Id = user.userId;
+        state.role = user.role;
       }
     },
     fillLoginData(state, action) {
       if ((state.registerStatus = "success")) {
         state.email = action.payload.email;
         state._password = action.payload.password;
+      }
+    },
+    logoutUser(state, action) {
+      if (state.loginUser) {
+        localStorage.removeItem("user");
+        return {
+          ...state,
+          token: "",
+          loginUser: "",
+          accessToken: "",
+          name: "",
+          email: "",
+          _Id: "",
+          role: [],
+        };
       }
     },
   },
@@ -98,6 +117,12 @@ const authSlice = createSlice({
     [login.fulfilled]: (state, action) => {
       state.loginStatus = "success";
       state.loginUser = action.payload;
+      state.token = action.payload.token;
+      state.accessToken = action.payload.accessToken;
+      state.name = action.payload.name;
+      state.email = action.payload.email;
+      state._Id = action.payload.userId;
+      state.role = action.payload.role;
     },
     [login.rejected]: (state, action) => {
       state.loginStatus = "rejected";
@@ -106,5 +131,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { fillUserData, fillLoginData } = authSlice.actions;
+export const { fillUserData, fillLoginData, logoutUser } = authSlice.actions;
 export default authSlice.reducer;

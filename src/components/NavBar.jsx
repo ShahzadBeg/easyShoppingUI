@@ -1,11 +1,18 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import styled from "styled-components";
+import { Dispatch } from "react";
+import { logoutUser } from "../features/slices/AuthSlice";
 
 const NavBar = () => {
   const { cartTotalQuantity } = useSelector((state) => state.cart);
   const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const handlelogOut = () => {
+    console.log("logout called");
+    dispatch(logoutUser());
+  };
 
   return (
     <nav className="nav-bar">
@@ -31,7 +38,7 @@ const NavBar = () => {
           </div>
         </Link>
         {auth._Id ? (
-          <Logout>Logout</Logout>
+          <Logout onClick={() => handlelogOut()}>Logout</Logout>
         ) : (
           <AuthLink>
             <Link to="/login">Login</Link>

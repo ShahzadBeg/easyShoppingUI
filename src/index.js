@@ -12,7 +12,9 @@ store.dispatch(getProducts());
 store.dispatch(getTotal());
 store.dispatch(fillUserData());
 root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
 );
