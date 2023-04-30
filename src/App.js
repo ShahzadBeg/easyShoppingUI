@@ -8,6 +8,10 @@ import NotFound from "./components/NotFound";
 import { ToastContainer } from "react-toastify";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
+import Dashboard from "./components/admin/Dashboard";
+import Product from "./components/admin/Product";
+import Summary from "./components/admin/Summary";
+import CreatProduct from "./components/admin/CreatProduct";
 
 function App() {
   return (
@@ -20,6 +24,12 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<Dashboard />}>
+            <Route path="products" element={<Product />}>
+              <Route path="create" element={<CreatProduct />} />
+            </Route>
+            <Route path="summary" element={<Summary />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

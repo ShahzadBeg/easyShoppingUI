@@ -10,7 +10,8 @@ const initialState = {
   name: "",
   email: "",
   _Id: "",
-  role: [],
+  roles: [],
+  IsAdmin: false,
   _password: localStorage.getItem("password"),
   registerStatus: "",
   registerMsg: "",
@@ -74,7 +75,12 @@ const authSlice = createSlice({
         state.name = user.name;
         state.email = user.email;
         state._Id = user.userId;
-        state.role = user.role;
+        state.roles = user.roles;
+        if (user.roles.length > 0) {
+          state.IsAdmin =
+            user.roles.indexOf("Admin") > -1 ||
+            user.roles.indexOf("SuperAdmin") > -1;
+        }
       }
     },
     fillLoginData(state, action) {
@@ -122,7 +128,12 @@ const authSlice = createSlice({
       state.name = action.payload.name;
       state.email = action.payload.email;
       state._Id = action.payload.userId;
-      state.role = action.payload.role;
+      state.roles = action.payload.roles;
+      if (state.roles.length > 0) {
+        state.IsAdmin =
+          action.payload.roles.indexOf("Admin") > -1 ||
+          action.payload.roles.indexOf("SuperAdmin") > -1;
+      }
     },
     [login.rejected]: (state, action) => {
       state.loginStatus = "rejected";
