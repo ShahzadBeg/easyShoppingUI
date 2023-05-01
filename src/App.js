@@ -12,6 +12,8 @@ import Dashboard from "./components/admin/Dashboard";
 import Product from "./components/admin/Product";
 import Summary from "./components/admin/Summary";
 import CreatProduct from "./components/admin/CreatProduct";
+import CreateTag from "./components/admin/CreateTag";
+import CreateCategory from "./components/admin/CreateCategory";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
             <Route path="products" element={<Product />}>
               <Route path="create" element={<CreatProduct />} />
             </Route>
+            <Route path="createtag" element={<CreateTag />} />
+            <Route path="createCategory" element={<CreateCategory />} />
             <Route path="summary" element={<Summary />} />
           </Route>
           <Route path="*" element={<NotFound />} />

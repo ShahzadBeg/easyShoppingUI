@@ -4,8 +4,7 @@ import Multiselect from "multiselect-react-dropdown";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getCategories,
-  getTags,
+  createProduct,
   testCreateProd,
 } from "../../features/slices/ProductSlice";
 import { PrimaryButton } from "./CommonStyled";
@@ -22,17 +21,10 @@ const CreatProduct = () => {
   const [images, setImages] = useState([]);
   const [tags, setTags] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
+
   const getProduct = useSelector((state) => state.products);
   const [product, setProduct] = useState(InitialState);
-  const handledSelectedTags = (e) => {
-    setSelectedTags(e);
-    console.log("selecttag", selectedTags);
-  };
-  const removeSelectedTag = (e) => {
-    setSelectedTags(e);
-    console.log("removeTag", selectedTags);
-  };
+
   useEffect(() => {
     const allTags = [];
     if (getProduct.tags.length > 0) {
@@ -55,9 +47,7 @@ const CreatProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     var formData = new FormData();
-
     formData.append("productName", product.productName);
     formData.append("description", product.description);
     formData.append("price", product.price);
@@ -75,8 +65,7 @@ const CreatProduct = () => {
       let category = categories[i];
       formData.append("productCategory", category);
     }
-
-    dispach(testCreateProd(formData));
+    dispach(createProduct(formData));
   };
 
   return (
@@ -90,7 +79,6 @@ const CreatProduct = () => {
           multiple
           accept="image/*"
           onChange={(e) => setImages(e.target.files)}
-          required
         />
         <input
           type="text"
@@ -109,7 +97,7 @@ const CreatProduct = () => {
           value={product.description}
         />
         <input
-          type="text"
+          type="number"
           placeholder="price"
           onChange={(e) => {
             setProduct({ ...product, price: e.target.value });
@@ -117,7 +105,7 @@ const CreatProduct = () => {
           value={product.price}
         />
         <input
-          type="text"
+          type="number"
           placeholder="stock"
           onChange={(e) => {
             setProduct({ ...product, stock: e.target.value });
@@ -137,20 +125,23 @@ const CreatProduct = () => {
           isObject={false}
           placeholder="Select Tags"
           showCheckbox
-          onSelect={(e) => setSelectedTags(e)}
-          onRemove={(e) => setSelectedTags(e)}
+          onSelect={(e) => setTags(e)}
+          onRemove={(e) => setTags(e)}
         />
         <Multiselect
           options={categories}
           isObject={false}
           placeholder="Select Categories"
           showCheckbox
-          onSelect={(e) => setSelectedTags(e)}
-          onRemove={(e) => setSelectedTags(e)}
+          onSelect={(e) => setCategories(e)}
+          onRemove={(e) => setCategories(e)}
         />
-        <PrimaryButton type="submit">Submit</PrimaryButton>
+        {getProduct.createProductStatus === "pending" ? (
+          "Submitting..."
+        ) : (
+          <PrimaryButton type="submit">Submit</PrimaryButton>
+        )}
       </StyledForm>
-
       <ImagePreview>
         {Array.from(images).map((image, index) => {
           return (
@@ -159,6 +150,7 @@ const CreatProduct = () => {
               src={image ? URL.createObjectURL(image) : null}
               width={100}
               height={100}
+              alt="imag"
               style={{ pedding: "10px" }}
             />
           );

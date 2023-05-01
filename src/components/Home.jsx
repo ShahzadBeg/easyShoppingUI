@@ -16,7 +16,7 @@ const Home = () => {
   };
   return (
     <div className="home-container">
-      {status == "pending" ? (
+      {status === "pending" ? (
         <p>loading...</p>
       ) : error ? (
         <p>Error : {error}</p>

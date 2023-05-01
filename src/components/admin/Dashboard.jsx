@@ -2,8 +2,17 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 import { useEffect } from "react";
-
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getCategories, getTags } from "../../features/slices/ProductSlice";
 const Dashboard = () => {
+  const prodcut = useSelector((state) => state.products);
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getTags());
+  //   dispatch(getCategories());
+  // }, [prodcut.tags, dispatch, prodcut.categories]);
+
   return (
     <StyledDashboard>
       <SideNav>
@@ -24,7 +33,24 @@ const Dashboard = () => {
         >
           Product
         </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "link-active" : "link-inactive"
+          }
+          to="/admin/createTag"
+        >
+          Create Tag
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "link-active" : "link-inactive"
+          }
+          to="/admin/createCategory"
+        >
+          Create Category
+        </NavLink>
       </SideNav>
+
       <Content>
         <Outlet />
       </Content>

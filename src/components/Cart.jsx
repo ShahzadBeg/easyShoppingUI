@@ -9,8 +9,6 @@ import {
   removeFromCart,
 } from "../features/slices/CartSlice";
 import { useEffect } from "react";
-import { login } from "../features/slices/AuthSlice";
-import { Navigate } from "react-router-dom";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
