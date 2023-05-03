@@ -1,11 +1,15 @@
 import axios from "axios";
 import { baseUrl, config } from "../features/api";
+import { useSelector } from "react-redux";
 
 const PayButton = ({ cart }) => {
+  const user = useSelector((state) => state.auth);
+
   const handleCheckout = () => {
-    console.log("item", cart);
+    let object = { ...cart, userID: user._Id };
+    let obj2 = { ...cart, ...object };
     axios
-      .post(`${baseUrl}/createorder`, cart, config)
+      .post(`${baseUrl}/createorder`, obj2, config)
       .then((response) => {
         if (response.data.url) {
           window.location.href = response.data.url;
