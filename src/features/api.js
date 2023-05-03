@@ -1,4 +1,4 @@
-export const baseUrl = "https://localhost:7169/api";
+export const baseUrl = "http://localhost:7169/api";
 
 const getToken = () => {
   let user = JSON.parse(localStorage.getItem("user"));

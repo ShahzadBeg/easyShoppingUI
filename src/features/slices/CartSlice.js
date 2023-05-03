@@ -1,12 +1,34 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { toast } from "react-toastify";
+import { baseUrl, config } from "../api";
 const initialState = {
   cartItems: localStorage.getItem("cartItems")
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [],
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
+
+  // createOrder: "",
+  // createOrderStatus: "",
+  // createOrderError: "",
 };
+
+export const createOrder = createAsyncThunk(
+  "cart/createOrder",
+  async (values, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${baseUrl}/createorder`,
+        values,
+        config
+      );
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 
 const cartSlice = createSlice({
   name: "cart",
@@ -76,6 +98,19 @@ const cartSlice = createSlice({
       state.cartTotalQuantity = totalQuantity;
       state.cartTotalAmount = total;
     },
+  },
+  extraReducers: {
+    // [createOrder.pending]: (state, action) => {
+    //   state.createOrderStatus = "pending";
+    // },
+    // [createOrder.fulfilled]: (state, action) => {
+    //   state.createOrderStatus = "success";
+    //   state.createOrder = action.payload;
+    // },
+    // [createOrder.rejected]: (state, action) => {
+    //   state.createOrderStatus = "error";
+    //   state.createOrderError = action.payload;
+    // },
   },
 });
 

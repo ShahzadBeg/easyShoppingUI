@@ -14,6 +14,7 @@ import Summary from "./components/admin/Summary";
 import CreatProduct from "./components/admin/CreatProduct";
 import CreateTag from "./components/admin/CreateTag";
 import CreateCategory from "./components/admin/CreateCategory";
+import SuccessCheckOut from "./components/SuccessCheckOut";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <Route path="createCategory" element={<CreateCategory />} />
             <Route path="summary" element={<Summary />} />
           </Route>
+          <Route path="/success-checkout" element={<SuccessCheckOut />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

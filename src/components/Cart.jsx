@@ -9,6 +9,7 @@ import {
   removeFromCart,
 } from "../features/slices/CartSlice";
 import { useEffect } from "react";
+import PayButton from "./PayButton";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
@@ -22,6 +23,7 @@ const Cart = () => {
   const handledecreseCart = (cartitem) => dispach(decreseCart(cartitem));
   const handledEncreaseQuantity = (cartItem) => dispach(addToCart(cartItem));
   const handledClearCart = () => dispach(clearCart());
+
   return (
     <div className="cart-container">
       <h2>Shopping Cart</h2>
@@ -93,7 +95,8 @@ const Cart = () => {
               </div>
               <p>taxes and shipping calculated at checkout</p>
               {auth._Id ? (
-                <button>Check Out</button>
+                // <PayButton cart={cart} />
+                <PayButton cart={cart} />
               ) : (
                 <button
                   className="cart-login"
