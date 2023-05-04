@@ -15,6 +15,7 @@ import CreatProduct from "./components/admin/CreatProduct";
 import CreateTag from "./components/admin/CreateTag";
 import CreateCategory from "./components/admin/CreateCategory";
 import SuccessCheckOut from "./components/SuccessCheckOut";
+import Address from "./components/Address";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/address" element={<Address />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Dashboard />}>
             <Route path="products" element={<Product />}>
