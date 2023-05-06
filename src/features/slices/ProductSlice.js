@@ -4,7 +4,7 @@ import { baseUrl, config, formDataConfig } from "../api";
 import { toast } from "react-toastify";
 
 const initialState = {
-  items: [],
+  item: {},
   status: null,
   error: null,
   tags: [],
@@ -101,7 +101,7 @@ export const createProduct = createAsyncThunk(
   "products/createProduct",
   async (values, { rejectWithValue }) => {
     try {
-      const response = axios.post(
+      const response = await axios.post(
         `${baseUrl}/createProduct`,
         values,
         formDataConfig
@@ -123,7 +123,7 @@ const productSlice = createSlice({
     },
     [getProducts.fulfilled]: (state, action) => {
       state.status = "success";
-      state.items = action.payload;
+      state.item = action.payload;
     },
     [getProducts.rejected]: (state, action) => {
       state.status = "rejected";
@@ -159,7 +159,7 @@ const productSlice = createSlice({
       state.createProductMsg = action.payload;
     },
     [createProduct.rejected]: (state, action) => {
-      state.createProductMsg = action.payload;
+      state.createProductStatus = "error";
       state.createProductError = action.payload;
     },
     [createTag.pending]: (state, action) => {

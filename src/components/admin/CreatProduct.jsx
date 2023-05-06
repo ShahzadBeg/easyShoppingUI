@@ -44,7 +44,7 @@ const CreatProduct = () => {
     }
     setCategories(allCategories);
   }, [getProduct.categories]);
-
+  console.log(getProduct);
   const handleSubmit = (e) => {
     e.preventDefault();
     var formData = new FormData();
@@ -136,11 +136,15 @@ const CreatProduct = () => {
           onSelect={(e) => setCategories(e)}
           onRemove={(e) => setCategories(e)}
         />
-        {getProduct.createProductStatus === "pending" ? (
-          "Submitting..."
-        ) : (
-          <PrimaryButton type="submit">Submit</PrimaryButton>
-        )}
+
+        <PrimaryButton
+          type="submit"
+          disabled={getProduct.createProductStatus == "pending" ? true : false}
+        >
+          {getProduct.createProductStatus == "pending"
+            ? "Submitting..."
+            : "Submit"}
+        </PrimaryButton>
       </StyledForm>
       <ImagePreview>
         {Array.from(images).map((image, index) => {

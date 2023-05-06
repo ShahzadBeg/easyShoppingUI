@@ -4,7 +4,7 @@ import { addToCart, getTotal } from "../features/slices/CartSlice";
 import { useEffect } from "react";
 
 const Home = () => {
-  const { items, status, error } = useSelector((state) => state.products);
+  const { item, status, error } = useSelector((state) => state.products);
   const cart = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
@@ -24,10 +24,10 @@ const Home = () => {
         <>
           <h2>New Arrivals</h2>
           <div className="products">
-            {items?.map((product) => (
+            {item.products?.map((product) => (
               <div key={product.id} className="product">
                 <h3>{product.name}</h3>
-                <img src={product.image} alt={product.name} />
+                <img src={product.images[0]} alt={product.name} />
                 <div className="details">
                   <span>{product.description}</span>
                   <span className="price">${product.price}</span>
