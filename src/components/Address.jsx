@@ -18,7 +18,7 @@ const Address = () => {
   const [stateId, setStateId] = useState(0);
   const [cityId, setCityId] = useState(0);
   const [error, setError] = useState("");
-  // const [cities, setCities] = useState([]);
+
   const initialState = {
     countryId: "",
     stateId: "",
