@@ -17,6 +17,7 @@ const initialState = {
 export const createOrder = createAsyncThunk(
   "cart/createOrder",
   async (values, { rejectWithValue }) => {
+    console.log("order", values);
     try {
       const response = await axios.post(
         `${baseUrl}/createorder`,
