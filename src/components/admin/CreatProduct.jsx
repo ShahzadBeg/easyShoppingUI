@@ -3,10 +3,7 @@ import { useState } from "react";
 import Multiselect from "multiselect-react-dropdown";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createProduct,
-  testCreateProd,
-} from "../../features/slices/ProductSlice";
+import { createProduct } from "../../features/slices/ProductSlice";
 import { PrimaryButton } from "./CommonStyled";
 
 const CreatProduct = () => {

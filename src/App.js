@@ -16,6 +16,9 @@ import CreateTag from "./components/admin/CreateTag";
 import CreateCategory from "./components/admin/CreateCategory";
 import SuccessCheckOut from "./components/SuccessCheckOut";
 import Address from "./components/Address";
+import Orders from "./components/admin/Orders";
+import Users from "./components/admin/Users";
+import ProductsList from "./components/admin/ProductsList";
 
 function App() {
   return (
@@ -31,11 +34,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Dashboard />}>
             <Route path="products" element={<Product />}>
+              <Route index element={<ProductsList />} />
               <Route path="create" element={<CreatProduct />} />
             </Route>
             <Route path="createtag" element={<CreateTag />} />
             <Route path="createCategory" element={<CreateCategory />} />
             <Route path="summary" element={<Summary />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="users" element={<Users />} />
           </Route>
           <Route path="/success-checkout" element={<SuccessCheckOut />} />
           <Route path="*" element={<NotFound />} />

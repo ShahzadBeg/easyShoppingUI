@@ -5,6 +5,10 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getCategories, getTags } from "../../features/slices/ProductSlice";
+import { FaUsers, FaStore, FaClipboard, FaTachometerAlt } from "react-icons/fa";
+import { BiCategory } from "react-icons/bi";
+import { AiOutlineTags } from "react-icons/ai";
+
 const Dashboard = () => {
   const prodcut = useSelector((state) => state.products);
   // const dispatch = useDispatch();
@@ -23,7 +27,7 @@ const Dashboard = () => {
           }
           to="/admin/summary"
         >
-          Summary
+          <FaTachometerAlt /> Summary
         </NavLink>
         <NavLink
           className={({ isActive }) =>
@@ -31,7 +35,15 @@ const Dashboard = () => {
           }
           to="/admin/products"
         >
-          Product
+          <FaStore /> Product
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "link-active" : "link-inactive"
+          }
+          to="/admin/orders"
+        >
+          <FaClipboard /> Orders
         </NavLink>
         <NavLink
           className={({ isActive }) =>
@@ -39,7 +51,7 @@ const Dashboard = () => {
           }
           to="/admin/createTag"
         >
-          Create Tag
+          <AiOutlineTags /> Tags
         </NavLink>
         <NavLink
           className={({ isActive }) =>
@@ -47,7 +59,15 @@ const Dashboard = () => {
           }
           to="/admin/createCategory"
         >
-          Create Category
+          <BiCategory /> Categories
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "link-active" : "link-inactive"
+          }
+          to="/admin/users"
+        >
+          <FaUsers /> Users
         </NavLink>
       </SideNav>
 
@@ -86,6 +106,14 @@ const SideNav = styled.div`
     text-decoration: none;
     margin-bottom: 1rem;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+
+    svg {
+      margin-right: 0.5rem;
+      font-size: 18px;
+    }
   }
 `;
 

@@ -22,6 +22,9 @@ const initialState = {
   createCategory: {},
   createCatgStatus: "",
   createCatgError: "",
+  deleteProductStatus: "",
+  deleteProductError: "",
+  deleteProductMsg: "",
 };
 
 export const getTags = createAsyncThunk(
@@ -54,6 +57,24 @@ export const getProducts = createAsyncThunk(
       return response?.data;
     } catch (err) {
       return rejectWithValue(err.message);
+    }
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  "products/deleteProduct",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(
+        `${baseUrl}/deleteProduct?Id=${id}`,
+        config
+      );
+
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error.response);
+      return rejectWithValue(error.response);
     }
   }
 );
@@ -183,6 +204,18 @@ const productSlice = createSlice({
     [createCategpry.rejected]: (state, action) => {
       state.createCatgStatus = "error";
       state.createCatgError = action.payload;
+    },
+
+    [deleteProduct.pending]: (state, action) => {
+      state.deleteProductStatus = "pending";
+    },
+    [deleteProduct.fulfilled]: (state, action) => {
+      state.deleteProductStatus = "success";
+      state.deleteProductMsg = action.payload;
+    },
+    [deleteProduct.rejected]: (state, action) => {
+      state.deleteProductStatus = "error";
+      state.deleteProductError = action.payload;
     },
   },
 });

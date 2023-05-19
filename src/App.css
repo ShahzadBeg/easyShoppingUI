@@ -287,6 +287,9 @@
 
 .link-active {
   color: #4b70e2;
+  border-left: 3px solid #4b70e2;
+  padding-left: 5px;
+  border-radius: 2px;
 }
 .link-inactive {
   color: rgb(97, 97, 97);
@@ -323,5 +326,9 @@
   }
   .cart-summary .clear-btn {
     margin-bottom: 2rem;
+  }
+
+  .test {
+    margin-left: 10px;
   }
 }
