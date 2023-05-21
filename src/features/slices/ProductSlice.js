@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 
 const initialState = {
   item: {},
+  loading: false,
   status: null,
   error: null,
   tags: [],
@@ -25,6 +26,12 @@ const initialState = {
   deleteProductStatus: "",
   deleteProductError: "",
   deleteProductMsg: "",
+  editProduct: null,
+  editProductLoading: false,
+  editproductError: "",
+  updatedProduct: {},
+  updateProductLoad: false,
+  updateProductError: "",
 };
 
 export const getTags = createAsyncThunk(
@@ -60,6 +67,21 @@ export const getProducts = createAsyncThunk(
     }
   }
 );
+export const getProductbyId = createAsyncThunk(
+  "products/getProductbyId",
+  async (values, { rejectWithValue }) => {
+    try {
+      var response = await axios.get(
+        `${baseUrl}/getProductbyIdAsync?id=${values}`,
+        config
+      );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response);
+    }
+  }
+);
 
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
@@ -69,11 +91,8 @@ export const deleteProduct = createAsyncThunk(
         `${baseUrl}/deleteProduct?Id=${id}`,
         config
       );
-
-      console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log(error.response);
       return rejectWithValue(error.response);
     }
   }
@@ -133,6 +152,23 @@ export const createProduct = createAsyncThunk(
     }
   }
 );
+export const updateProduct = createAsyncThunk(
+  "products/updateProduct",
+  async (values, { rejectWithValue }) => {
+    console.log("values", { ...values });
+
+    try {
+      const response = await axios.put(
+        `${baseUrl}/updateProduct/${8}`,
+        values,
+        formDataConfig
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response);
+    }
+  }
+);
 
 const productSlice = createSlice({
   name: "products",
@@ -141,14 +177,17 @@ const productSlice = createSlice({
   extraReducers: {
     [getProducts.pending]: (state, action) => {
       state.status = "pending";
+      state.loading = true;
     },
     [getProducts.fulfilled]: (state, action) => {
       state.status = "success";
       state.item = action.payload;
+      state.loading = false;
     },
     [getProducts.rejected]: (state, action) => {
       state.status = "rejected";
       state.error = action.payload;
+      state.loading = false;
     },
     [getTags.pending]: (state, action) => {
       state.tagStatus = "pending";
@@ -178,6 +217,14 @@ const productSlice = createSlice({
     [createProduct.fulfilled]: (state, action) => {
       state.createProductStatus = "success";
       state.createProductMsg = action.payload;
+      const newProduct = {
+        description: action.payload.description,
+        id: action.payload.id,
+        images: action.payload.images,
+        name: action.payload.name,
+        price: action.payload.price,
+      };
+      state.item.products.push(newProduct);
     },
     [createProduct.rejected]: (state, action) => {
       state.createProductStatus = "error";
@@ -210,12 +257,39 @@ const productSlice = createSlice({
       state.deleteProductStatus = "pending";
     },
     [deleteProduct.fulfilled]: (state, action) => {
+      const newProdList = state.item.products.filter(
+        (product) => product.id !== action.payload.id
+      );
+      state.item.products = newProdList;
       state.deleteProductStatus = "success";
       state.deleteProductMsg = action.payload;
     },
     [deleteProduct.rejected]: (state, action) => {
       state.deleteProductStatus = "error";
       state.deleteProductError = action.payload;
+    },
+    [getProductbyId.pending]: (state, action) => {
+      state.editProductLoading = true;
+    },
+    [getProductbyId.fulfilled]: (state, action) => {
+      state.editProductLoading = false;
+      state.editProduct = action.payload;
+    },
+    [getProductbyId.rejected]: (state, action) => {
+      state.editProductLoading = false;
+      state.editproductError = action.payload;
+    },
+
+    [updateProduct.pending]: (state, action) => {
+      state.updateProductLoad = true;
+    },
+    [updateProduct.fulfilled]: (state, action) => {
+      state.updateProductLoad = false;
+      state.updateProduct = action.payload;
+    },
+    [updateProduct.rejected]: (state, action) => {
+      state.updateProductLoad = false;
+      state.updateProductError = action.payload;
     },
   },
 });

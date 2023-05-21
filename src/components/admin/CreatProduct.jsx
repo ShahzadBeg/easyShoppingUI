@@ -41,7 +41,7 @@ const CreatProduct = () => {
     }
     setCategories(allCategories);
   }, [getProduct.categories]);
-  console.log(getProduct);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     var formData = new FormData();
@@ -62,6 +62,7 @@ const CreatProduct = () => {
       let category = categories[i];
       formData.append("productCategory", category);
     }
+
     dispach(createProduct(formData));
   };
 

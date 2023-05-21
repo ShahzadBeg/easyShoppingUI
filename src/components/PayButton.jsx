@@ -8,7 +8,6 @@ const PayButton = ({ cart }) => {
   const handleCheckout = () => {
     let object = { ...cart, userID: user._Id };
     let obj2 = { ...cart, ...object };
-    console.log("original", obj2);
     const orderValue = {
       cartItems: [
         // {
@@ -36,7 +35,7 @@ const PayButton = ({ cart }) => {
         });
       }
     }
-    console.log("chnagdeCart", orderValue);
+
     axios
       .post(`${baseUrl}/createorder`, orderValue, config)
       .then((response) => {
